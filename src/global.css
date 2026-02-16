@@ -1,189 +1,119 @@
-/* =========================
-   SCANNER PAGE (FIXED / CLEAN)
-========================= */
-
-/* Make the whole page background consistent */
-.scanner-page,
-.scanner-page ion-content {
-  --background: transparent !important;
-  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.18), transparent 55%),
-              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.12), transparent 60%),
-              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+/* ✅ WHITE PAGE */
+.scanner-page-white,
+.scanner-page-white ion-content {
+  --background: #ffffff !important;
+  background: #ffffff !important;
 }
 
-/* Center everything nicely (no left-only column look) */
-.scanner-content {
-  /* IMPORTANT: this removes the “left panel” feeling */
-  max-width: 100% !important;
-  margin: 0 auto !important;
+/* toolbar clean */
+.scanner-toolbar-white {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
 
+/* ✅ center card */
+.scanner-wrap {
+  min-height: calc(100vh - 120px);
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-
-  padding: 22px 14px 28px !important;
+  padding: 14px 12px;
 }
 
-/* Create a glass “card” wrapper using IonContent’s first children */
-.scanner-content > * {
+.scanner-card {
   width: 100%;
   max-width: 520px;
-}
-
-/* Add a glass panel behind the buttons + scanner */
-.scanner-content::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(700px 450px at 20% 8%, rgba(255, 46, 85, 0.08), transparent 55%),
-              radial-gradient(800px 520px at 85% 18%, rgba(255, 77, 109, 0.06), transparent 60%);
-  opacity: 1;
-}
-
-/* Give a card feel to the whole block by styling a container effect
-   (we can't add a wrapper div, so we simulate with shadow around elements) */
-.admin-login-btn,
-.scan-btn,
-.qr-container,
-.scanner-message,
-.last-person-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
-/* =========================
-   BUTTONS (better spacing + better look)
-========================= */
-
-.admin-login-btn {
-  margin: 0 0 12px 0;
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --color: rgba(255, 255, 255, 0.92);
-  --border-color: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
-}
-
-.scan-btn {
-  margin: 0 0 14px 0;
+/* ✅ GREEN BUTTON */
+.btn-green {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #ffffff;
+  --border-radius: 14px;
   font-weight: 900;
-  letter-spacing: 0.4px;
-
-  --border-radius: 18px;
-  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
-  --background-hover: linear-gradient(135deg, #ff4d6d, #ff2e55);
-  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
-
-  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
-              0 18px 40px rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.3px;
+  margin: 0 0 12px 0;
 }
 
-/* Make buttons look “pill” and not too tall */
-ion-button.admin-login-btn::part(native),
-ion-button.scan-btn::part(native) {
+ion-button.btn-green::part(native) {
   min-height: 52px;
-  transition: transform 0.12s ease, filter 0.12s ease;
 }
 
-ion-button.admin-login-btn:active::part(native),
-ion-button.scan-btn:active::part(native) {
-  transform: translateY(1px) scale(0.99);
+/* messages */
+.scanner-message-white {
+  margin-top: 8px;
+  display: block;
+  text-align: center;
+  font-weight: 800;
+  color: #111;
 }
 
-/* =========================
-   QR SCANNER BOX (clean + centered)
-========================= */
+.scanner-message-white p {
+  margin: 0;
+}
 
-.qr-container {
-  margin: 0 auto 12px auto;
+.last-person-white {
+  margin-top: 8px;
+  display: block;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(47, 158, 99, 0.25);
+  background: rgba(47, 158, 99, 0.08);
+  color: #111;
+}
+
+.last-person-white p {
+  margin: 0;
+  font-weight: 900;
+}
+
+.scanner-modal {
+  --height: 60vh;
+  --width: 30vw;
+  --border-radius: 18px;
+}
+
+/* remove default Ionic modal max-height limits */
+.scanner-modal::part(content) {
+  height: 60vh;
+  max-height: 60vh;
+  overflow: hidden;
+}
+
+/* ✅ MODAL scanner layout */
+.modal-scan-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.qr-box-white {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 16px;
   padding: 12px;
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.60);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
 }
 
-/* html5-qrcode injects video + canvas; we style both */
-.qr-container video,
-.qr-container canvas {
+.qr-container-white video,
+.qr-container-white canvas {
   width: 100% !important;
-  border-radius: 18px;
+  border-radius: 14px;
   object-fit: cover;
 }
 
-/* Sometimes html5-qrcode adds extra borders; soften them */
-.qr-container * {
-  border-color: rgba(255, 255, 255, 0.12) !important;
+/* remove extra injected borders from html5-qrcode */
+.qr-container-white * {
+  border-color: rgba(0, 0, 0, 0.10) !important;
 }
 
-/* =========================
-   MESSAGE / STATUS (nice “toast-like” card)
-========================= */
-
-.scanner-message {
-  margin-top: 10px;
-  padding: 12px 14px;
-  border-radius: 16px;
-
-  text-align: center;
-  font-weight: 800;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.scanner-message p {
-  margin: 0;
-}
-
-/* =========================
-   LAST SCANNED PERSON (highlight card)
-========================= */
-
-.last-person-card {
-  margin-top: 12px;
-  padding: 14px 16px;
-  border-radius: 18px;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255, 46, 85, 0.22),
-    rgba(255, 77, 109, 0.14)
-  );
-  border: 1px solid rgba(255, 46, 85, 0.32);
-
-  box-shadow: 0 0 24px rgba(255, 46, 85, 0.18),
-              0 18px 40px rgba(0, 0, 0, 0.50);
-}
-
-.last-person-card p {
-  margin: 0;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.96);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 520px) {
-  .scanner-content {
-    padding: 16px 12px 22px !important;
-  }
-  .scanner-content > * {
-    max-width: 100%;
-  }
-}
 
 
 /* =========================

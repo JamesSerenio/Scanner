@@ -3,14 +3,18 @@ import {
   IonButton,
   IonContent,
   IonHeader,
+  IonModal,
   IonPage,
   IonText,
   IonTitle,
   IonToolbar,
+  IonIcon,
 } from "@ionic/react";
+import { closeOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 import { supabase } from "../utils/supabaseClient";
+
 
 type Person = {
   id: string;
@@ -26,6 +30,8 @@ const Home: React.FC = () => {
   const scannerRef = useRef<Html5Qrcode | null>(null);
 
   const [running, setRunning] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
+
   const [msg, setMsg] = useState<string>("");
   const [lastPerson, setLastPerson] = useState<Person | null>(null);
 
@@ -48,25 +54,19 @@ const Home: React.FC = () => {
 
   const stop = async (): Promise<void> => {
     const inst = scannerRef.current;
-    if (!inst) {
-      setRunning(false);
-      return;
-    }
 
     try {
-      await inst.stop();
-    } catch (err) {
-      console.log("stop error:", err);
-    }
-
-    try {
-      await inst.clear();
-    } catch (err) {
-      console.log("clear error:", err);
+      if (inst) {
+        await inst.stop();
+        await inst.clear();
+      }
+    } catch {
+      // ignore
     }
 
     scannerRef.current = null;
     setRunning(false);
+    setScannerOpen(false);
   };
 
   const handleScan = async (qrValue: string): Promise<void> => {
@@ -110,40 +110,47 @@ const Home: React.FC = () => {
     setMsg("");
     setLastPerson(null);
 
-    if (running) return;
+    // open modal first (so the QR container exists in DOM)
+    setScannerOpen(true);
 
-    try {
-      const qr = new Html5Qrcode(readerId);
-      scannerRef.current = qr;
+    // give the modal a tiny time to mount the #qr-reader div
+    setTimeout(async () => {
+      if (running) return;
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const onScanFailure = (_errorMessage: string): void => {
-        // ignore per-frame decode errors
-      };
+      try {
+        const qr = new Html5Qrcode(readerId);
+        scannerRef.current = qr;
 
-      await qr.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 260, height: 260 } },
-        async (decodedText: string) => {
-          const value = decodedText.trim();
-          if (!value) return;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const onScanFailure = (_errorMessage: string): void => {
+          // ignore per-frame decode errors
+        };
 
-          await handleScan(value);
-          await stop(); // auto-stop after 1 successful scan
-        },
-        onScanFailure
-      );
+        await qr.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: { width: 260, height: 260 } },
+          async (decodedText: string) => {
+            const value = decodedText.trim();
+            if (!value) return;
 
-      setRunning(true);
-    } catch (err) {
-      scannerRef.current = null;
-      setRunning(false);
-      setMsg(
-        err instanceof Error
-          ? err.message
-          : "Camera blocked / not found. Please allow camera permission."
-      );
-    }
+            await handleScan(value);
+            await stop(); // auto-stop after 1 successful scan
+          },
+          onScanFailure
+        );
+
+        setRunning(true);
+      } catch (err) {
+        scannerRef.current = null;
+        setRunning(false);
+        setScannerOpen(false);
+        setMsg(
+          err instanceof Error
+            ? err.message
+            : "Camera blocked / not found. Please allow camera permission."
+        );
+      }
+    }, 120);
   };
 
   useEffect(() => {
@@ -154,51 +161,72 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <IonPage className="scanner-page">
+    <IonPage className="scanner-page-white">
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="scanner-toolbar-white">
           <IonTitle>Attendance Scanner</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding scanner-content">
-        <IonButton
-          expand="block"
-          fill="outline"
-          className="admin-login-btn"
-          onClick={() => history.push("/admin")}
+      <IonContent className="ion-padding">
+        <div className="scanner-wrap">
+          <div className="scanner-card">
+            <IonButton
+              expand="block"
+              className="btn-green"
+              onClick={() => history.push("/admin")}
+            >
+              Admin Login
+            </IonButton>
+
+            <IonButton
+              expand="block"
+              className="btn-green"
+              onClick={start}
+            >
+              Scan to Attendance
+            </IonButton>
+
+            {msg ? (
+              <IonText className="scanner-message-white">
+                <p>{msg}</p>
+              </IonText>
+            ) : null}
+
+            {lastPerson ? (
+              <IonText className="last-person-white">
+                <p>
+                  <b>Last:</b> {lastPerson.full_name} ({lastPerson.sex ?? "N/A"}
+                  , {lastPerson.age ?? "N/A"})
+                </p>
+              </IonText>
+            ) : null}
+          </div>
+        </div>
+
+        {/* ✅ Scanner Modal (camera only shows after tapping Scan) */}
+        <IonModal
+          isOpen={scannerOpen}
+          onDidDismiss={() => void stop()}
+          className="scanner-modal"
         >
-          Admin Login
-        </IonButton>
+          <IonHeader>
+            <IonToolbar className="scanner-toolbar-white">
+              <IonTitle>Scan QR</IonTitle>
+              <IonButton slot="end" fill="clear" onClick={() => void stop()}>
+                <IonIcon icon={closeOutline} />
+              </IonButton>
+            </IonToolbar>
+          </IonHeader>
 
-        <div style={{ height: 12 }} />
-
-        <IonButton
-          expand="block"
-          className="scan-btn"
-          onClick={running ? stop : start}
-        >
-          {running ? "Stop Scanning" : "Scan to Attendance"}
-        </IonButton>
-
-        <div style={{ height: 12 }} />
-
-        <div id={readerId} className="qr-container" />
-
-        {msg ? (
-          <IonText className="scanner-message">
-            <p>{msg}</p>
-          </IonText>
-        ) : null}
-
-        {lastPerson ? (
-          <IonText className="last-person-card">
-            <p>
-              <b>Last:</b> {lastPerson.full_name} ({lastPerson.sex ?? "N/A"},{" "}
-              {lastPerson.age ?? "N/A"})
-            </p>
-          </IonText>
-        ) : null}
+          <IonContent className="ion-padding">
+            <div className="modal-scan-wrap">
+              <div className="qr-box-white">
+                <div id={readerId} className="qr-container-white" />
+              </div>
+            </div>
+          </IonContent>
+        </IonModal>
       </IonContent>
     </IonPage>
   );
