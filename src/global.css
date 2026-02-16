@@ -1,0 +1,606 @@
+/* =========================
+   SCANNER PAGE (FIXED / CLEAN)
+========================= */
+
+/* Make the whole page background consistent */
+.scanner-page,
+.scanner-page ion-content {
+  --background: transparent !important;
+  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.18), transparent 55%),
+              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.12), transparent 60%),
+              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+}
+
+/* Center everything nicely (no left-only column look) */
+.scanner-content {
+  /* IMPORTANT: this removes the “left panel” feeling */
+  max-width: 100% !important;
+  margin: 0 auto !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 22px 14px 28px !important;
+}
+
+/* Create a glass “card” wrapper using IonContent’s first children */
+.scanner-content > * {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* Add a glass panel behind the buttons + scanner */
+.scanner-content::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(700px 450px at 20% 8%, rgba(255, 46, 85, 0.08), transparent 55%),
+              radial-gradient(800px 520px at 85% 18%, rgba(255, 77, 109, 0.06), transparent 60%);
+  opacity: 1;
+}
+
+/* Give a card feel to the whole block by styling a container effect
+   (we can't add a wrapper div, so we simulate with shadow around elements) */
+.admin-login-btn,
+.scan-btn,
+.qr-container,
+.scanner-message,
+.last-person-card {
+  border-radius: 18px;
+}
+
+/* =========================
+   BUTTONS (better spacing + better look)
+========================= */
+
+.admin-login-btn {
+  margin: 0 0 12px 0;
+  --border-radius: 18px;
+  --background: rgba(255, 255, 255, 0.06);
+  --color: rgba(255, 255, 255, 0.92);
+  --border-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+}
+
+.scan-btn {
+  margin: 0 0 14px 0;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+
+  --border-radius: 18px;
+  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
+  --background-hover: linear-gradient(135deg, #ff4d6d, #ff2e55);
+  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
+
+  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
+              0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* Make buttons look “pill” and not too tall */
+ion-button.admin-login-btn::part(native),
+ion-button.scan-btn::part(native) {
+  min-height: 52px;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+ion-button.admin-login-btn:active::part(native),
+ion-button.scan-btn:active::part(native) {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* =========================
+   QR SCANNER BOX (clean + centered)
+========================= */
+
+.qr-container {
+  margin: 0 auto 12px auto;
+  padding: 12px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.60);
+}
+
+/* html5-qrcode injects video + canvas; we style both */
+.qr-container video,
+.qr-container canvas {
+  width: 100% !important;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+/* Sometimes html5-qrcode adds extra borders; soften them */
+.qr-container * {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* =========================
+   MESSAGE / STATUS (nice “toast-like” card)
+========================= */
+
+.scanner-message {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+
+  text-align: center;
+  font-weight: 800;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.scanner-message p {
+  margin: 0;
+}
+
+/* =========================
+   LAST SCANNED PERSON (highlight card)
+========================= */
+
+.last-person-card {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 46, 85, 0.22),
+    rgba(255, 77, 109, 0.14)
+  );
+  border: 1px solid rgba(255, 46, 85, 0.32);
+
+  box-shadow: 0 0 24px rgba(255, 46, 85, 0.18),
+              0 18px 40px rgba(0, 0, 0, 0.50);
+}
+
+.last-person-card p {
+  margin: 0;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 520px) {
+  .scanner-content {
+    padding: 16px 12px 22px !important;
+  }
+  .scanner-content > * {
+    max-width: 100%;
+  }
+}
+
+
+/* =========================
+   ADMIN LOGIN (FIXED / CLEAN)
+========================= */
+
+/* Full background */
+.admin-login-page,
+.admin-login-page ion-content {
+  --background: transparent !important;
+  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.18), transparent 55%),
+              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.12), transparent 60%),
+              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+}
+
+/* True center */
+.admin-login-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 14px !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Card */
+.admin-login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 22px 18px 18px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
+}
+
+/* Title */
+.admin-login-title {
+  margin: 0 0 14px;
+  text-align: center;
+  font-weight: 950;
+  letter-spacing: 0.5px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Form items */
+.admin-login-item {
+  margin: 10px 0;
+  border-radius: 16px;
+  overflow: hidden;
+
+  --background: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.14);
+  --highlight-color-focused: #ff2e55;
+}
+
+.admin-login-item ion-label {
+  font-weight: 850;
+  color: rgba(255, 255, 255, 0.76) !important;
+}
+
+.admin-login-item ion-input input {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Error box */
+.admin-login-error {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 850;
+
+  background: rgba(255, 46, 85, 0.16);
+  border: 1px solid rgba(255, 46, 85, 0.30);
+  color: rgba(255, 230, 235, 0.95);
+}
+
+.admin-login-error p {
+  margin: 0;
+}
+
+/* Buttons */
+.admin-login-btn {
+  margin-top: 12px;
+  font-weight: 950;
+  letter-spacing: 0.4px;
+
+  --border-radius: 18px;
+  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
+  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
+
+  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
+              0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+.admin-back-btn {
+  margin-top: 10px;
+
+  --border-radius: 18px;
+  --background: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.18);
+  --color: rgba(255, 255, 255, 0.92);
+
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+}
+
+/* Make buttons same height + smooth press */
+ion-button.admin-login-btn::part(native),
+ion-button.admin-back-btn::part(native) {
+  min-height: 52px;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+ion-button.admin-login-btn:active::part(native),
+ion-button.admin-back-btn:active::part(native) {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* Mobile */
+@media (max-width: 420px) {
+  .admin-login-card {
+    padding: 18px 14px 16px;
+    border-radius: 20px;
+  }
+  .admin-login-title {
+    font-size: 17px;
+  }
+}
+
+
+/* =========================
+   ADMIN DASHBOARD (FIXED / CLEAN)
+========================= */
+
+.admin-dashboard-page,
+.admin-dashboard-page ion-content {
+  --background: transparent !important;
+  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.16), transparent 55%),
+              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.10), transparent 60%),
+              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+}
+
+/* Center layout like a real dashboard */
+.admin-dashboard-content {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 18px 14px 28px !important;
+
+  display: flex;
+  justify-content: center;
+}
+
+/* Everything inside will have max width */
+.admin-dashboard-content > * {
+  width: 100%;
+  max-width: 980px;
+}
+
+/* Top bar */
+.admin-topbar {
+  margin-bottom: 12px;
+}
+
+.admin-logout-btn {
+  --border-radius: 18px;
+  --background: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.18);
+  --color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+}
+
+/* Main glass card */
+.admin-card {
+  padding: 18px 16px 16px;
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
+}
+
+.admin-section-title {
+  margin: 4px 0 12px;
+  font-weight: 950;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Inputs */
+.admin-form-item {
+  margin: 10px 0;
+  border-radius: 16px;
+  overflow: hidden;
+
+  --background: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.14);
+  --highlight-color-focused: #ff2e55;
+}
+
+.admin-form-item ion-label {
+  font-weight: 850;
+  color: rgba(255, 255, 255, 0.76) !important;
+}
+
+.admin-form-item ion-input input {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.admin-form-item ion-select::part(text) {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Upload */
+.admin-upload {
+  margin-top: 10px;
+  padding: 12px 12px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+}
+
+.admin-upload-title {
+  display: inline-block;
+  font-weight: 950;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.admin-upload-input {
+  display: block;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.admin-upload-hint p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* Message */
+.admin-message {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 850;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+}
+
+.admin-message p {
+  margin: 0;
+}
+
+/* Save button */
+.admin-save-btn {
+  margin-top: 12px;
+  font-weight: 950;
+  letter-spacing: 0.4px;
+
+  --border-radius: 18px;
+  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
+  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
+
+  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
+              0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* QR preview */
+.qr-preview {
+  margin-top: 14px;
+  padding: 14px 14px;
+  border-radius: 18px;
+
+  background: rgba(255, 46, 85, 0.12);
+  border: 1px solid rgba(255, 46, 85, 0.26);
+}
+
+.qr-image {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 14px;
+  display: block;
+  margin-top: 10px;
+  box-shadow: 0 0 20px rgba(255, 46, 85, 0.18);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  margin: 18px 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+}
+
+/* People grid */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.person-card {
+  padding: 14px 14px;
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+.person-top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.person-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.person-avatar.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.person-name {
+  margin: 0;
+  font-weight: 950;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.person-sub {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 750;
+}
+
+.person-qr {
+  margin-top: 10px;
+  padding: 10px 10px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.person-qr-text {
+  margin: 0;
+  word-break: break-all;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Logs header and list */
+.logs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-refresh-btn {
+  --border-radius: 18px;
+  --background: rgba(255, 255, 255, 0.06);
+  --border-color: rgba(255, 255, 255, 0.18);
+  --color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+}
+
+.logs-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.log-card {
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+.log-name {
+  margin: 0;
+  font-weight: 950;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.log-sub {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 750;
+}
+
+/* Responsive */
+@media (max-width: 760px) {
+  .people-grid {
+    grid-template-columns: 1fr;
+  }
+}
