@@ -1,10 +1,11 @@
+// src/App.tsx
 import { Redirect, Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
 import Home from "./pages/Home";
 import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
+import Admin_menu from "./pages/Admin_menu";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -14,7 +15,7 @@ import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";
 import "@ionic/react/css/text-alignment.css";
@@ -24,10 +25,7 @@ import "@ionic/react/css/display.css";
 
 import "./global.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- */
+/* Ionic Dark Mode */
 import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
@@ -39,19 +37,19 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        {/* ✅ Scanner (anon) page */}
+        {/* Scanner (anon) */}
         <Route exact path="/home">
           <Home />
         </Route>
 
-        {/* ✅ Admin login */}
+        {/* Admin login */}
         <Route exact path="/admin">
           <AdminLogin />
         </Route>
 
-        {/* ✅ Admin dashboard */}
-        <Route exact path="/admin/dashboard">
-          <AdminDashboard />
+        {/* Admin shell/menu (contains AdminDashboard inside) */}
+        <Route path="/admin/dashboard">
+          <Admin_menu />
         </Route>
 
         {/* default */}
