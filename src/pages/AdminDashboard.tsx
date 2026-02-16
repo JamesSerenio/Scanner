@@ -18,13 +18,13 @@ import { toDataURL } from "qrcode";
 import { supabase } from "../utils/supabaseClient";
 
 
-type PersonRow = {
+type AttendancePersonRow = {
   id: string;
   full_name: string;
   age: number | null;
   sex: string | null;
-  image_url: string | null;
-  image_path: string | null;
+  image_url: string | null;  // public URL
+  image_path: string | null; // storage path
   qr_value: string;
   created_at: string;
 };
@@ -60,6 +60,7 @@ const AdminDashboard: React.FC = () => {
     return allowed.includes(ext) ? ext : "jpg";
   };
 
+  // ✅ upload to storage
   const uploadImageToStorage = async (): Promise<
     { publicUrl: string; path: string } | null
   > => {
@@ -111,7 +112,11 @@ const AdminDashboard: React.FC = () => {
     const { data: sess } = await supabase.auth.getSession();
     const createdBy = sess.session?.user?.id ?? null;
 
-    const { error } = await supabase.from("attendance_people").insert({
+    const payload: Partial<AttendancePersonRow> & {
+      address: string | null;
+      contact: string | null;
+      created_by: string | null;
+    } = {
       full_name: fullName.trim(),
       age: age ? Number(age) : null,
       sex,
@@ -121,7 +126,9 @@ const AdminDashboard: React.FC = () => {
       created_by: createdBy,
       image_url: uploaded?.publicUrl ?? null,
       image_path: uploaded?.path ?? null,
-    });
+    };
+
+    const { error } = await supabase.from("attendance_people").insert(payload);
 
     if (error) {
       if (uploaded?.path) await deleteStoragePath(uploaded.path);

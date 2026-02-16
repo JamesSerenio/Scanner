@@ -15,20 +15,23 @@ import {
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 
-/* ✅ keep supabase client (NOT removed) */
+/* ✅ supabase client */
 import { supabase } from "../utils/supabaseClient";
 
-/* ✅ only page import */
+/* ✅ pages */
 import AdminDashboard from "./AdminDashboard";
+import AdminAttendanceRecord from "./Admin_attendance_record";
+
+type MenuKey = "dashboard" | "attendance";
 
 type MenuItem = {
   name: string;
-  key: "dashboard";
+  key: MenuKey;
 };
 
 const Admin_menu: React.FC = () => {
   const history = useHistory();
-  const [activePage, setActivePage] = useState<MenuItem["key"]>("dashboard");
+  const [activePage, setActivePage] = useState<MenuKey>("dashboard");
 
   useEffect(() => {
     (async () => {
@@ -38,10 +41,16 @@ const Admin_menu: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const menuItems: MenuItem[] = [{ name: "Dashboard", key: "dashboard" }];
+  const menuItems: MenuItem[] = [
+    { name: "Dashboard", key: "dashboard" },
+    { name: "Attendance Records", key: "attendance" },
+  ];
 
+  /* ✅ FIX: no JSX.Element typing */
   const renderContent = () => {
     switch (activePage) {
+      case "attendance":
+        return <AdminAttendanceRecord />;
       case "dashboard":
       default:
         return <AdminDashboard />;
@@ -72,7 +81,11 @@ const Admin_menu: React.FC = () => {
                 <IonItem
                   button
                   lines="none"
-                  className={activePage === item.key ? "admin-menu-item active" : "admin-menu-item"}
+                  className={
+                    activePage === item.key
+                      ? "admin-menu-item active"
+                      : "admin-menu-item"
+                  }
                   onClick={() => setActivePage(item.key)}
                 >
                   {item.name}
@@ -81,7 +94,12 @@ const Admin_menu: React.FC = () => {
             ))}
 
             <IonMenuToggle autoHide={false}>
-              <IonItem button lines="none" className="admin-menu-item logout" onClick={() => void handleLogout()}>
+              <IonItem
+                button
+                lines="none"
+                className="admin-menu-item logout"
+                onClick={() => void handleLogout()}
+              >
                 Logout
               </IonItem>
             </IonMenuToggle>
@@ -95,11 +113,17 @@ const Admin_menu: React.FC = () => {
               <IonButtons slot="start">
                 <IonMenuButton />
               </IonButtons>
-              <IonTitle>Admin</IonTitle>
+              <IonTitle>
+                {activePage === "attendance"
+                  ? "Attendance Records"
+                  : "Dashboard"}
+              </IonTitle>
             </IonToolbar>
           </IonHeader>
 
-          <IonContent className="ion-padding">{renderContent()}</IonContent>
+          <IonContent className="ion-padding">
+            {renderContent()}
+          </IonContent>
         </div>
       </IonSplitPane>
     </IonPage>
