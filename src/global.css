@@ -117,420 +117,394 @@ ion-button.btn-green::part(native) {
 
 
 /* =========================
-   ADMIN LOGIN (FIXED / CLEAN)
+   ADMIN LOGIN - WHITE + CENTER
 ========================= */
 
-/* Full background */
-.admin-login-page,
-.admin-login-page ion-content {
-  --background: transparent !important;
-  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.18), transparent 55%),
-              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.12), transparent 60%),
-              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+.admin-login-page-white,
+.admin-login-page-white ion-content {
+  --background: #ffffff !important;
+  background: #ffffff !important;
 }
 
-/* True center */
-.admin-login-content {
+/* toolbar clean white */
+.admin-toolbar-white {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* TRUE center (middle of screen) */
+.admin-center {
+  min-height: calc(100vh - 120px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 22px 14px !important;
-  max-width: 100% !important;
-  margin: 0 auto !important;
+  padding: 14px 12px;
 }
 
-/* Card */
-.admin-login-card {
+/* White card */
+.admin-card-white {
   width: 100%;
-  max-width: 440px;
-  padding: 22px 18px 18px;
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
+  max-width: 520px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 /* Title */
-.admin-login-title {
-  margin: 0 0 14px;
+.admin-title-white {
+  margin: 4px 0 14px;
   text-align: center;
   font-weight: 950;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.95);
+  color: #111;
 }
 
-/* Form items */
-.admin-login-item {
+/* Inputs */
+.admin-item-white {
   margin: 10px 0;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
 
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.14);
-  --highlight-color-focused: #ff2e55;
+  --background: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.10);
 }
 
-.admin-login-item ion-label {
+.admin-item-white ion-label {
   font-weight: 850;
-  color: rgba(255, 255, 255, 0.76) !important;
+  color: rgba(0, 0, 0, 0.65) !important;
 }
 
-.admin-login-item ion-input input {
-  color: rgba(255, 255, 255, 0.95) !important;
+.admin-item-white ion-input input {
+  color: #111 !important;
 }
 
-/* Error box */
-.admin-login-error {
+/* Error */
+.admin-error-white {
   margin: 10px 0 12px;
   padding: 10px 12px;
   border-radius: 14px;
   text-align: center;
   font-weight: 850;
 
-  background: rgba(255, 46, 85, 0.16);
-  border: 1px solid rgba(255, 46, 85, 0.30);
-  color: rgba(255, 230, 235, 0.95);
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.20);
+  color: rgba(185, 28, 28, 0.95);
 }
 
-.admin-login-error p {
+.admin-error-white p {
   margin: 0;
 }
 
-/* Buttons */
-.admin-login-btn {
-  margin-top: 12px;
-  font-weight: 950;
-  letter-spacing: 0.4px;
+/* ✅ SAME GREEN BUTTON as Home */
+.btn-green {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #ffffff;
+  --border-radius: 14px;
 
-  --border-radius: 18px;
-  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
-  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
-
-  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
-              0 18px 40px rgba(0, 0, 0, 0.55);
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  margin: 12px 0 6px 0;
 }
 
-.admin-back-btn {
-  margin-top: 10px;
-
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
-}
-
-/* Make buttons same height + smooth press */
-ion-button.admin-login-btn::part(native),
-ion-button.admin-back-btn::part(native) {
+ion-button.btn-green::part(native) {
   min-height: 52px;
-  transition: transform 0.12s ease, filter 0.12s ease;
 }
 
-ion-button.admin-login-btn:active::part(native),
-ion-button.admin-back-btn:active::part(native) {
-  transform: translateY(1px) scale(0.99);
+/* back button (clean text button) */
+.btn-back {
+  --color: rgba(0, 0, 0, 0.62);
+  font-weight: 900;
+  margin-top: 2px;
 }
 
-/* Mobile */
-@media (max-width: 420px) {
-  .admin-login-card {
-    padding: 18px 14px 16px;
-    border-radius: 20px;
-  }
-  .admin-login-title {
-    font-size: 17px;
-  }
+.btn-back::part(native) {
+  min-height: 44px;
 }
+
 
 
 /* =========================
-   ADMIN DASHBOARD (FIXED / CLEAN)
+   ADMIN UNIFORM THEME (WHITE + GREEN)
 ========================= */
 
-.admin-dashboard-page,
-.admin-dashboard-page ion-content {
-  --background: transparent !important;
-  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.16), transparent 55%),
-              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.10), transparent 60%),
-              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+.admin-white-page,
+.admin-white-page ion-content {
+  --background: #ffffff !important;
+  background: #ffffff !important;
 }
 
-/* Center layout like a real dashboard */
-.admin-dashboard-content {
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  padding: 18px 14px 28px !important;
+/* toolbar */
+.admin-toolbar-white {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
 
+/* center wide container */
+.admin-center-wide {
+  min-height: calc(100vh - 120px);
   display: flex;
+  align-items: center;
   justify-content: center;
+  padding: 14px 12px;
 }
 
-/* Everything inside will have max width */
-.admin-dashboard-content > * {
+/* main card */
+.admin-card-white {
   width: 100%;
   max-width: 980px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
-/* Top bar */
-.admin-topbar {
-  margin-bottom: 12px;
+/* header row */
+.admin-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
-.admin-logout-btn {
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+.admin-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-/* Main glass card */
-.admin-card {
-  padding: 18px 16px 16px;
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
-}
-
-.admin-section-title {
-  margin: 4px 0 12px;
+.admin-title-white {
+  margin: 0;
   font-weight: 950;
-  letter-spacing: 0.4px;
-  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.2px;
+  font-size: 18px;
+  color: #111;
 }
 
-/* Inputs */
-.admin-form-item {
+/* form items */
+.admin-item-white {
   margin: 10px 0;
-  border-radius: 16px;
+  border-radius: 14px;
   overflow: hidden;
 
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.14);
-  --highlight-color-focused: #ff2e55;
+  --background: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.10);
 }
 
-.admin-form-item ion-label {
+.admin-item-white ion-label {
   font-weight: 850;
-  color: rgba(255, 255, 255, 0.76) !important;
+  color: rgba(0, 0, 0, 0.65) !important;
 }
 
-.admin-form-item ion-input input {
-  color: rgba(255, 255, 255, 0.95) !important;
+.admin-item-white ion-input input {
+  color: #111 !important;
 }
 
-.admin-form-item ion-select::part(text) {
-  color: rgba(255, 255, 255, 0.95);
+.admin-item-white ion-select::part(text) {
+  color: #111;
 }
 
-/* Upload */
-.admin-upload {
+/* upload box */
+.upload-box {
   margin-top: 10px;
-  padding: 12px 12px;
-  border-radius: 16px;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.02);
 }
 
-.admin-upload-title {
+.upload-title {
   display: inline-block;
   font-weight: 950;
   margin-bottom: 8px;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(0, 0, 0, 0.82);
 }
 
-.admin-upload-input {
+.upload-input {
   display: block;
   width: 100%;
-  color: rgba(255, 255, 255, 0.88);
 }
 
-.admin-upload-hint p {
+.upload-hint p {
   margin: 10px 0 0;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 800;
 }
 
-/* Message */
-.admin-message {
+/* message */
+.admin-message-white {
   margin-top: 12px;
   padding: 10px 14px;
   border-radius: 14px;
   text-align: center;
   font-weight: 850;
 
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.admin-message p {
+.admin-message-white p {
   margin: 0;
 }
 
-/* Save button */
-.admin-save-btn {
-  margin-top: 12px;
-  font-weight: 950;
-  letter-spacing: 0.4px;
+/* ✅ green button shared */
+.btn-green {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #ffffff;
+  --border-radius: 14px;
 
-  --border-radius: 18px;
-  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
-  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
 
-  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
-              0 18px 40px rgba(0, 0, 0, 0.55);
+.btn-green.small {
+  font-size: 12px;
+  --border-radius: 12px;
+}
+
+ion-button.btn-green::part(native) {
+  min-height: 52px;
+}
+
+ion-button.btn-green.small::part(native) {
+  min-height: 42px;
 }
 
 /* QR preview */
-.qr-preview {
+.qr-preview-white {
   margin-top: 14px;
-  padding: 14px 14px;
-  border-radius: 18px;
-
-  background: rgba(255, 46, 85, 0.12);
-  border: 1px solid rgba(255, 46, 85, 0.26);
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(47, 158, 99, 0.22);
+  background: rgba(47, 158, 99, 0.08);
 }
 
-.qr-image {
+.qr-image-white {
   width: 100%;
   max-width: 320px;
   border-radius: 14px;
   display: block;
   margin-top: 10px;
-  box-shadow: 0 0 20px rgba(255, 46, 85, 0.18);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
 }
 
-/* Divider */
-.divider {
+/* divider */
+.divider-white {
   height: 1px;
   margin: 18px 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.10), transparent);
 }
 
-/* People grid */
-.people-grid {
+/* people grid */
+.people-grid-white {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
-.person-card {
-  padding: 14px 14px;
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+.person-card-white {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
 }
 
-.person-top {
+.person-top-white {
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
-.person-avatar {
+.person-avatar-white {
   width: 54px;
   height: 54px;
-  border-radius: 16px;
+  border-radius: 14px;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(0, 0, 0, 0.10);
 }
 
-.person-avatar.placeholder {
+.person-avatar-white.placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 22px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.55);
 }
 
-.person-name {
+.person-name-white {
   margin: 0;
   font-weight: 950;
-  color: rgba(255, 255, 255, 0.95);
+  color: #111;
 }
 
-.person-sub {
+.person-sub-white {
   margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 750;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 800;
 }
 
-.person-qr {
+.person-qr-white {
   margin-top: 10px;
-  padding: 10px 10px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.person-qr-text {
+.person-qr-text-white {
   margin: 0;
   word-break: break-all;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 800;
 }
 
-/* Logs header and list */
-.logs-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.admin-refresh-btn {
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
-}
-
-.logs-list {
+/* logs */
+.logs-list-white {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
 }
 
-.log-card {
+.log-card-white {
   padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
 }
 
-.log-name {
+.log-name-white {
   margin: 0;
   font-weight: 950;
-  color: rgba(255, 255, 255, 0.95);
+  color: #111;
 }
 
-.log-sub {
+.log-sub-white {
   margin: 6px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-weight: 750;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 800;
 }
 
-/* Responsive */
+/* responsive */
 @media (max-width: 760px) {
-  .people-grid {
+  .people-grid-white {
     grid-template-columns: 1fr;
   }
 }
+
