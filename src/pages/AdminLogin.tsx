@@ -1,3 +1,4 @@
+// src/pages/AdminLogin.tsx
 import React, { useEffect, useState } from "react";
 import {
   IonButton,
@@ -15,25 +16,38 @@ import {
 import { useHistory } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
 
-
 const AdminLogin: React.FC = () => {
   const history = useHistory();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Optional: if already logged in, go dashboard
+  /**
+   * ✅ FIX:
+   * - auto-redirect ONLY if role === "authenticated"
+   * - anon users MUST stay on login form
+   */
   useEffect(() => {
+    let mounted = true;
+
     (async () => {
       const { data } = await supabase.auth.getSession();
-      if (data.session) {
+      const user = data.session?.user;
+
+      if (!mounted) return;
+
+      if (user?.role === "authenticated") {
         history.replace("/admin/dashboard");
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
+    return () => {
+      mounted = false;
+    };
+  }, [history]);
 
   const login = async (): Promise<void> => {
     if (loading) return;
@@ -42,6 +56,9 @@ const AdminLogin: React.FC = () => {
     setLoading(true);
 
     try {
+      // ✅ important: clear anon session before admin login
+      await supabase.auth.signOut();
+
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
@@ -112,7 +129,7 @@ const AdminLogin: React.FC = () => {
               expand="block"
               fill="clear"
               className="btn-back"
-              onClick={() => history.push("/")}
+              onClick={() => history.push("/home")}
               disabled={loading}
             >
               Back

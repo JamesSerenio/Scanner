@@ -1,3 +1,4 @@
+// src/pages/Home.tsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   IonButton,
@@ -15,7 +16,6 @@ import { useHistory } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 import { supabase } from "../utils/supabaseClient";
 
-
 type Person = {
   id: string;
   full_name: string;
@@ -27,7 +27,14 @@ type Person = {
 
 const Home: React.FC = () => {
   const history = useHistory();
+
   const scannerRef = useRef<Html5Qrcode | null>(null);
+
+  // ✅ prevents multiple records
+  const scanLockRef = useRef(false);
+
+  // ✅ optional extra safety (ignore same QR within 2 seconds)
+  const lastScanRef = useRef<{ value: string; at: number } | null>(null);
 
   const [running, setRunning] = useState(false);
   const [scannerOpen, setScannerOpen] = useState(false);
@@ -65,6 +72,8 @@ const Home: React.FC = () => {
     }
 
     scannerRef.current = null;
+    scanLockRef.current = false; // ✅ reset
+    lastScanRef.current = null; // ✅ reset
     setRunning(false);
     setScannerOpen(false);
   };
@@ -95,7 +104,7 @@ const Home: React.FC = () => {
       });
 
       if (lErr) {
-        setMsg("Failed to save attendance. Try again.");
+        setMsg(lErr.message || "Failed to save attendance. Try again.");
         return;
       }
 
@@ -110,12 +119,15 @@ const Home: React.FC = () => {
     setMsg("");
     setLastPerson(null);
 
+    // ✅ reset locks each time you start
+    scanLockRef.current = false;
+    lastScanRef.current = null;
+
     // open modal first (so the QR container exists in DOM)
     setScannerOpen(true);
 
-    // give the modal a tiny time to mount the #qr-reader div
     setTimeout(async () => {
-      if (running) return;
+      if (running || scannerRef.current) return;
 
       try {
         const qr = new Html5Qrcode(readerId);
@@ -133,8 +145,38 @@ const Home: React.FC = () => {
             const value = decodedText.trim();
             if (!value) return;
 
+            // ✅ 1) hard lock (ONLY ONCE)
+            if (scanLockRef.current) return;
+
+            // ✅ 2) optional: ignore same QR within 2 seconds
+            const now = Date.now();
+            if (
+              lastScanRef.current?.value === value &&
+              now - lastScanRef.current.at < 2000
+            ) {
+              return;
+            }
+
+            scanLockRef.current = true;
+            lastScanRef.current = { value, at: now };
+
+            // ✅ stop camera ASAP to prevent more callbacks
+            try {
+              await qr.stop();
+              await qr.clear();
+            } catch {
+              // ignore
+            }
+
+            scannerRef.current = null;
+            setRunning(false);
+            setScannerOpen(false);
+
+            // ✅ now do DB insert once
             await handleScan(value);
-            await stop(); // auto-stop after 1 successful scan
+
+            // ✅ keep locked until user presses Scan again
+            // (so it will never create another record in the same scan session)
           },
           onScanFailure
         );
@@ -183,6 +225,7 @@ const Home: React.FC = () => {
               expand="block"
               className="btn-green"
               onClick={start}
+              disabled={running || scannerOpen} // ✅ no double start
             >
               Scan to Attendance
             </IonButton>
@@ -204,7 +247,7 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* ✅ Scanner Modal (camera only shows after tapping Scan) */}
+        {/* ✅ Scanner Modal */}
         <IonModal
           isOpen={scannerOpen}
           onDidDismiss={() => void stop()}

@@ -23,7 +23,7 @@
 
 .scanner-card {
   width: 100%;
-  max-width: 520px;
+  max-width: 350px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
@@ -145,7 +145,7 @@ ion-button.btn-green::part(native) {
 /* White card */
 .admin-card-white {
   width: 100%;
-  max-width: 520px;
+  max-width: 400px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
