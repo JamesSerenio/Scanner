@@ -423,6 +423,211 @@ ion-button.atr3-btn::part(native) {
   font-size: 13px;
 }
 
+/* =========================
+   RPL3 - Registered People (TABLE)
+   Scoped classes only
+========================= */
+
+.rpl3-page,
+.rpl3-page ion-content {
+  --background: #f7f7fb !important;
+  background: #f7f7fb !important;
+}
+
+/* header */
+.rpl3-toolbar {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* layout */
+.rpl3-content {
+  --padding-top: 14px;
+  --padding-bottom: 24px;
+}
+
+.rpl3-wrap {
+  min-height: calc(100vh - 112px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px 12px 28px;
+}
+
+.rpl3-card {
+  width: 100%;
+  max-width: 1180px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* head */
+.rpl3-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.rpl3-title {
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  color: #111;
+  font-size: 18px;
+}
+
+.rpl3-subtitle {
+  margin: 4px 0 0;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* button */
+.rpl3-btn {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #ffffff;
+  --border-radius: 14px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+ion-button.rpl3-btn::part(native) {
+  min-height: 44px;
+}
+
+/* alerts */
+.rpl3-alert {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 800;
+}
+
+.rpl3-alertRow {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rpl3-alert--error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  color: rgba(185, 28, 28, 0.95);
+}
+
+.rpl3-alert p {
+  margin: 0;
+}
+
+/* table */
+.rpl3-tableWrap {
+  width: 100%;
+  overflow: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rpl3-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 980px;
+  background: #fff;
+}
+
+.rpl3-table thead th {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: rgba(0, 0, 0, 0.6);
+
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rpl3-table tbody td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.82);
+  vertical-align: middle;
+}
+
+.rpl3-table tbody tr:hover td {
+  background: rgba(47, 158, 99, 0.06);
+}
+
+.rpl3-name {
+  font-weight: 950;
+  color: rgba(0, 0, 0, 0.92);
+}
+
+.rpl3-address {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rpl3-qr {
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.rpl3-empty {
+  padding: 18px 10px !important;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 850;
+}
+
+/* avatar */
+.rpl3-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rpl3-avatar--ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 18px;
+}
+
+.rpl3-footNote {
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.58);
+  font-weight: 750;
+  font-size: 13px;
+}
 
 
 /* =========================
