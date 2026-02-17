@@ -23,7 +23,7 @@
 
 .scanner-card {
   width: 100%;
-  max-width: 350px;
+  max-width: 35 0px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
@@ -231,285 +231,189 @@ ion-button.btn-green::part(native) {
 
 
 /* =========================
-   ADMIN DASHBOARD (FIXED / CLEAN)
+   ADMIN DASHBOARD (adb2) - UNIQUE + COMPACT + CENTER
 ========================= */
 
-.admin-dashboard-page,
-.admin-dashboard-page ion-content {
-  --background: transparent !important;
-  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.16), transparent 55%),
-              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.10), transparent 60%),
-              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+.adb2-page,
+.adb2-page ion-content {
+  --background: #ffffff !important;
+  background: #ffffff !important;
 }
 
-/* Center layout like a real dashboard */
-.admin-dashboard-content {
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  padding: 18px 14px 28px !important;
-
-  display: flex;
-  justify-content: center;
+/* clean white toolbar */
+.adb2-toolbar {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Everything inside will have max width */
-.admin-dashboard-content > * {
-  width: 100%;
-  max-width: 980px;
+/* ✅ CENTER (both horizontal + vertical) */
+.adb2-content {
+  --padding-top: 12px;
+  --padding-bottom: 16px;
+  --padding-start: 12px;
+  --padding-end: 12px;
 }
 
-/* Top bar */
-.admin-topbar {
-  margin-bottom: 12px;
-}
-
-.admin-logout-btn {
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
-}
-
-/* Main glass card */
-.admin-card {
-  padding: 18px 16px 16px;
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
-}
-
-.admin-section-title {
-  margin: 4px 0 12px;
-  font-weight: 950;
-  letter-spacing: 0.4px;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-/* Inputs */
-.admin-form-item {
-  margin: 10px 0;
-  border-radius: 16px;
-  overflow: hidden;
-
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.14);
-  --highlight-color-focused: #ff2e55;
-}
-
-.admin-form-item ion-label {
-  font-weight: 850;
-  color: rgba(255, 255, 255, 0.76) !important;
-}
-
-.admin-form-item ion-input input {
-  color: rgba(255, 255, 255, 0.95) !important;
-}
-
-.admin-form-item ion-select::part(text) {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-/* Upload */
-.admin-upload {
-  margin-top: 10px;
-  padding: 12px 12px;
-  border-radius: 16px;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-}
-
-.admin-upload-title {
-  display: inline-block;
-  font-weight: 950;
-  margin-bottom: 8px;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.admin-upload-input {
-  display: block;
-  width: 100%;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.admin-upload-hint p {
-  margin: 10px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-/* Message */
-.admin-message {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  text-align: center;
-  font-weight: 850;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
-}
-
-.admin-message p {
-  margin: 0;
-}
-
-/* Save button */
-.admin-save-btn {
-  margin-top: 12px;
-  font-weight: 950;
-  letter-spacing: 0.4px;
-
-  --border-radius: 18px;
-  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
-  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
-
-  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
-              0 18px 40px rgba(0, 0, 0, 0.55);
-}
-
-/* QR preview */
-.qr-preview {
-  margin-top: 14px;
-  padding: 14px 14px;
-  border-radius: 18px;
-
-  background: rgba(255, 46, 85, 0.12);
-  border: 1px solid rgba(255, 46, 85, 0.26);
-}
-
-.qr-image {
-  width: 100%;
-  max-width: 320px;
-  border-radius: 14px;
-  display: block;
-  margin-top: 10px;
-  box-shadow: 0 0 20px rgba(255, 46, 85, 0.18);
-}
-
-/* Divider */
-.divider {
-  height: 1px;
-  margin: 18px 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
-}
-
-/* People grid */
-.people-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.person-card {
-  padding: 14px 14px;
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-}
-
-.person-top {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.person-avatar {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.person-avatar.placeholder {
+.adb2-wrap {
+  min-height: calc(100vh - 112px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  background: rgba(255, 255, 255, 0.08);
 }
 
-.person-name {
-  margin: 0;
-  font-weight: 950;
-  color: rgba(255, 255, 255, 0.95);
+/* ✅ Compact card (smaller height) */
+.adb2-card {
+  width: 100%;
+  max-width: 420px;
+
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 18px;
+
+  padding: 14px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
 }
 
-.person-sub {
-  margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 750;
-}
-
-.person-qr {
-  margin-top: 10px;
-  padding: 10px 10px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-.person-qr-text {
-  margin: 0;
-  word-break: break-all;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-/* Logs header and list */
-.logs-header {
+/* header row */
+.adb2-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  margin-bottom: 8px;
 }
 
-.admin-refresh-btn {
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+.adb2-title {
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  font-size: 16px;
+  color: #111;
 }
 
-.logs-list {
-  display: grid;
-  grid-template-columns: 1fr;
+/* ✅ Compact ion items */
+.adb2-item {
+  margin: 8px 0;
+  border-radius: 14px;
+  overflow: hidden;
+
+  --background: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.10);
+
+  --min-height: 54px;
+}
+
+.adb2-item ion-label {
+  font-weight: 850;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.adb2-item ion-input input {
+  color: #111 !important;
+  font-size: 14px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.adb2-item ion-select::part(text) {
+  color: #111;
+  font-size: 14px;
+}
+
+/* ✅ Upload compact */
+.adb2-upload {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.adb2-uploadRow {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.log-card {
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+.adb2-uploadLabel {
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.70);
+  white-space: nowrap;
 }
 
-.log-name {
+.adb2-uploadInput {
+  width: 100%;
+  font-size: 13px;
+}
+
+.adb2-hint p {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.60);
+}
+
+/* message */
+.adb2-msg {
+  margin-top: 10px;
+}
+
+.adb2-msg p {
   margin: 0;
-  font-weight: 950;
-  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  font-weight: 850;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.70);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 10px 12px;
+  border-radius: 14px;
 }
 
-.log-sub {
-  margin: 6px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-weight: 750;
+/* ✅ Buttons (compact) */
+.adb2-btn {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #fff;
+  --border-radius: 14px;
+
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  margin: 10px 0 0;
 }
 
-/* Responsive */
-@media (max-width: 760px) {
-  .people-grid {
-    grid-template-columns: 1fr;
-  }
+ion-button.adb2-btn::part(native) {
+  min-height: 46px; /* ✅ smaller than before */
+}
+
+.adb2-btn--small {
+  font-size: 12px;
+  margin: 0;
+}
+
+ion-button.adb2-btn--small::part(native) {
+  min-height: 38px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* QR preview */
+.adb2-qr {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(47, 158, 99, 0.22);
+  background: rgba(47, 158, 99, 0.08);
+}
+
+.adb2-qrImg {
+  width: 100%;
+  max-width: 260px;
+  display: block;
+  margin-top: 10px;
+  border-radius: 14px;
 }

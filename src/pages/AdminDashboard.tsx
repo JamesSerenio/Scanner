@@ -17,13 +17,12 @@ import { useHistory } from "react-router-dom";
 import { toDataURL } from "qrcode";
 import { supabase } from "../utils/supabaseClient";
 
-
 type AttendancePersonRow = {
   id: string;
   full_name: string;
   age: number | null;
   sex: string | null;
-  image_url: string | null;  // public URL
+  image_url: string | null; // public URL
   image_path: string | null; // storage path
   qr_value: string;
   created_at: string;
@@ -47,9 +46,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     (async () => {
       const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        history.replace("/admin");
-      }
+      if (!data.session) history.replace("/admin");
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -60,7 +57,6 @@ const AdminDashboard: React.FC = () => {
     return allowed.includes(ext) ? ext : "jpg";
   };
 
-  // ✅ upload to storage
   const uploadImageToStorage = async (): Promise<
     { publicUrl: string; path: string } | null
   > => {
@@ -136,7 +132,7 @@ const AdminDashboard: React.FC = () => {
       return;
     }
 
-    const url = await toDataURL(qrValue, { margin: 1, width: 420 });
+    const url = await toDataURL(qrValue, { margin: 1, width: 380 });
     setQrDataUrl(url);
 
     setFullName("");
@@ -150,28 +146,28 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <IonPage className="admin-white-page">
+    <IonPage className="adb2-page">
       <IonHeader>
-        <IonToolbar className="admin-toolbar-white">
+        <IonToolbar className="adb2-toolbar">
           <IonTitle>Admin Dashboard</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
-        <div className="admin-center-wide">
-          <div className="admin-card-white">
-            <div className="admin-header-row">
-              <h2 className="admin-title-white">Add Attendance Person</h2>
+      <IonContent className="adb2-content">
+        <div className="adb2-wrap">
+          <div className="adb2-card">
+            <div className="adb2-head">
+              <h2 className="adb2-title">Add Attendance Person</h2>
 
               <IonButton
-                className="btn-green small"
+                className="adb2-btn adb2-btn--small"
                 onClick={() => history.push("/admin/attendance-record")}
               >
                 Attendance Records
               </IonButton>
             </div>
 
-            <IonItem className="admin-item-white" lines="none">
+            <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Full Name</IonLabel>
               <IonInput
                 value={fullName}
@@ -179,16 +175,17 @@ const AdminDashboard: React.FC = () => {
               />
             </IonItem>
 
-            <IonItem className="admin-item-white" lines="none">
+            <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Age</IonLabel>
               <IonInput
                 value={age}
                 onIonInput={(e) => setAge(e.detail.value ?? "")}
+                inputMode="numeric"
                 type="number"
               />
             </IonItem>
 
-            <IonItem className="admin-item-white" lines="none">
+            <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Sex</IonLabel>
               <IonSelect value={sex} onIonChange={(e) => setSex(String(e.detail.value))}>
                 <IonSelectOption value="Male">Male</IonSelectOption>
@@ -197,7 +194,7 @@ const AdminDashboard: React.FC = () => {
               </IonSelect>
             </IonItem>
 
-            <IonItem className="admin-item-white" lines="none">
+            <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Address</IonLabel>
               <IonInput
                 value={address}
@@ -205,7 +202,7 @@ const AdminDashboard: React.FC = () => {
               />
             </IonItem>
 
-            <IonItem className="admin-item-white" lines="none">
+            <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Contact</IonLabel>
               <IonInput
                 value={contact}
@@ -213,42 +210,42 @@ const AdminDashboard: React.FC = () => {
               />
             </IonItem>
 
-            <div className="upload-box">
-              <label className="upload-label">
-                <span className="upload-title">Image</span>
+            <div className="adb2-upload">
+              <div className="adb2-uploadRow">
+                <span className="adb2-uploadLabel">Image</span>
                 <input
-                  className="upload-input"
+                  className="adb2-uploadInput"
                   type="file"
                   accept="image/*"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                 />
-              </label>
+              </div>
 
               {file ? (
-                <IonText className="upload-hint">
+                <IonText className="adb2-hint">
                   <p>Selected: {file.name}</p>
                 </IonText>
               ) : null}
             </div>
 
             {msg ? (
-              <IonText className="admin-message-white">
+              <IonText className="adb2-msg">
                 <p>{msg}</p>
               </IonText>
             ) : null}
 
-            <IonButton expand="block" className="btn-green" onClick={addPerson}>
+            <IonButton expand="block" className="adb2-btn" onClick={addPerson}>
               Save Person + Generate QR
             </IonButton>
 
             {qrDataUrl ? (
-              <div className="qr-preview-white">
+              <div className="adb2-qr">
                 <IonText>
                   <p>
                     <b>Generated QR:</b>
                   </p>
                 </IonText>
-                <img className="qr-image-white" src={qrDataUrl} alt="QR" />
+                <img className="adb2-qrImg" src={qrDataUrl} alt="QR" />
               </div>
             ) : null}
           </div>
