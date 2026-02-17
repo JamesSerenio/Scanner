@@ -158,13 +158,6 @@ const AdminDashboard: React.FC = () => {
           <div className="adb2-card">
             <div className="adb2-head">
               <h2 className="adb2-title">Add Attendance Person</h2>
-
-              <IonButton
-                className="adb2-btn adb2-btn--small"
-                onClick={() => history.push("/admin/attendance-record")}
-              >
-                Attendance Records
-              </IonButton>
             </div>
 
             <IonItem className="adb2-item" lines="none">
