@@ -255,14 +255,20 @@ ion-button.btn-green::part(native) {
   --padding-end: 12px;
 }
 
+/* ✅ wrapper: allow scroll, avoid bottom cut */
 .adb2-wrap {
   min-height: calc(100vh - 112px);
   display: flex;
-  align-items: center;
   justify-content: center;
-}
 
+  /* ✅ default: top aligned para hindi ma-cut */
+  align-items: flex-start;
+
+  /* ✅ add bottom space para di dikit/cut */
+  padding: 14px 0 28px;
+}
 /* ✅ Compact card (smaller height) */
+
 .adb2-card {
   width: 100%;
   max-width: 420px;
@@ -439,4 +445,10 @@ ion-button.adb2-btn--small::part(native) {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+@media (min-height: 780px) {
+  .adb2-wrap {
+    align-items: center;
+  }
 }

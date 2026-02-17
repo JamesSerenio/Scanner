@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -23,8 +23,8 @@ type AttendancePersonRow = {
   full_name: string;
   age: number | null;
   sex: string | null;
-  image_url: string | null; // public URL
-  image_path: string | null; // storage path
+  image_url: string | null;
+  image_path: string | null;
   qr_value: string;
   created_at: string;
 };
@@ -43,10 +43,7 @@ const AdminDashboard: React.FC = () => {
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
 
-  // ✅ selected local file (for name display only)
   const [file, setFile] = useState<File | null>(null);
-
-  // ✅ uploaded storage info (source of preview + used on save)
   const [uploaded, setUploaded] = useState<UploadedImage | null>(null);
 
   const [uploading, setUploading] = useState(false);
@@ -56,6 +53,18 @@ const AdminDashboard: React.FC = () => {
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
 
   const bucket = useMemo(() => "attendance", []);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const resetFilePicker = (): void => {
+    // ✅ clears the displayed filename (e.g., qr.png)
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const clearLocalImageState = (): void => {
+    setFile(null);
+    setUploaded(null);
+    resetFilePicker();
+  };
 
   useEffect(() => {
     (async () => {
@@ -77,7 +86,6 @@ const AdminDashboard: React.FC = () => {
     if (error) console.log("remove error:", error.message);
   };
 
-  // ✅ upload immediately when user picks an image
   const uploadNow = async (picked: File): Promise<UploadedImage | null> => {
     const ext = getSafeExt(picked.name);
     const path = `people/${crypto.randomUUID()}.${ext}`;
@@ -98,21 +106,27 @@ const AdminDashboard: React.FC = () => {
 
     if (!publicUrl) {
       setMsg("Upload ok but failed to create public URL.");
-      // clean orphan
-      await deleteStoragePath(path);
+      await deleteStoragePath(path); // cleanup orphan
       return null;
     }
 
     return { publicUrl, path };
   };
 
-  const onPickFile = async (picked: File | null): Promise<void> => {
+  // ✅ Use event so we can clear picker value for re-selecting same file
+  const onPickFile = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     setMsg("");
     setQrDataUrl("");
 
+    const picked = e.target.files?.[0] ?? null;
+
+    // ✅ allow selecting same file again later
+    // (we also clear in remove/save, but this makes it consistent)
+    e.target.value = "";
+
     if (!picked) return;
 
-    // ✅ if may previous uploaded image, delete it first (replace behavior)
+    // ✅ replace behavior: delete previously uploaded file
     if (uploaded?.path) {
       await deleteStoragePath(uploaded.path);
       setUploaded(null);
@@ -126,9 +140,8 @@ const AdminDashboard: React.FC = () => {
     setUploading(false);
 
     if (!up) {
-      // failed upload
-      setFile(null);
-      setUploaded(null);
+      // upload failed -> clear everything including filename display
+      clearLocalImageState();
       return;
     }
 
@@ -139,13 +152,13 @@ const AdminDashboard: React.FC = () => {
     setMsg("");
     setQrDataUrl("");
 
-    // ✅ delete from storage if uploaded
+    // ✅ delete uploaded image from storage
     if (uploaded?.path) {
       await deleteStoragePath(uploaded.path);
     }
 
-    setUploaded(null);
-    setFile(null);
+    // ✅ remove filename like "qr.png" + clear states
+    clearLocalImageState();
   };
 
   const addPerson = async (): Promise<void> => {
@@ -176,8 +189,6 @@ const AdminDashboard: React.FC = () => {
       contact: contact.trim() || null,
       qr_value: qrValue,
       created_by: createdBy,
-
-      // ✅ use already-uploaded image (or null)
       image_url: uploaded?.publicUrl ?? null,
       image_path: uploaded?.path ?? null,
     };
@@ -185,12 +196,11 @@ const AdminDashboard: React.FC = () => {
     const { error } = await supabase.from("attendance_people").insert(payload);
 
     if (error) {
-      // ✅ if save failed, also delete uploaded image (para walang orphan)
+      // ✅ save failed: delete uploaded file too (no orphan)
       if (uploaded?.path) await deleteStoragePath(uploaded.path);
 
       setSaving(false);
-      setUploaded(null);
-      setFile(null);
+      clearLocalImageState();
 
       setMsg(error.message);
       return;
@@ -205,9 +215,8 @@ const AdminDashboard: React.FC = () => {
     setAddress("");
     setContact("");
 
-    // ✅ clear selection but KEEP uploaded? (usually after save you can clear it)
-    setUploaded(null);
-    setFile(null);
+    // ✅ clear image + filename after save
+    clearLocalImageState();
 
     setSaving(false);
     setMsg("Person added + QR generated.");
@@ -221,7 +230,7 @@ const AdminDashboard: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="adb2-content">
+      <IonContent className="adb2-content" scrollY={true}>
         <div className="adb2-wrap">
           <div className="adb2-card">
             <div className="adb2-head">
@@ -230,10 +239,7 @@ const AdminDashboard: React.FC = () => {
 
             <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Full Name</IonLabel>
-              <IonInput
-                value={fullName}
-                onIonInput={(e) => setFullName(e.detail.value ?? "")}
-              />
+              <IonInput value={fullName} onIonInput={(e) => setFullName(e.detail.value ?? "")} />
             </IonItem>
 
             <IonItem className="adb2-item" lines="none">
@@ -257,31 +263,26 @@ const AdminDashboard: React.FC = () => {
 
             <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Address</IonLabel>
-              <IonInput
-                value={address}
-                onIonInput={(e) => setAddress(e.detail.value ?? "")}
-              />
+              <IonInput value={address} onIonInput={(e) => setAddress(e.detail.value ?? "")} />
             </IonItem>
 
             <IonItem className="adb2-item" lines="none">
               <IonLabel position="stacked">Contact</IonLabel>
-              <IonInput
-                value={contact}
-                onIonInput={(e) => setContact(e.detail.value ?? "")}
-              />
+              <IonInput value={contact} onIonInput={(e) => setContact(e.detail.value ?? "")} />
             </IonItem>
 
-            {/* ✅ Upload + Preview (from uploaded publicUrl) */}
+            {/* ✅ Upload + Preview */}
             <div className="adb2-upload">
               <div className="adb2-uploadRow">
                 <span className="adb2-uploadLabel">Image</span>
 
                 <input
+                  ref={fileInputRef}
                   className="adb2-uploadInput"
                   type="file"
                   accept="image/*"
                   disabled={uploading || saving}
-                  onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
+                  onChange={onPickFile}
                 />
               </div>
 
