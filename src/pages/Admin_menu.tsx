@@ -21,8 +21,9 @@ import { supabase } from "../utils/supabaseClient";
 /* ✅ pages */
 import AdminDashboard from "./AdminDashboard";
 import AdminAttendanceRecord from "./Admin_attendance_record";
+import Admin_people from "./Admin_people";
 
-type MenuKey = "dashboard" | "attendance";
+type MenuKey = "dashboard" | "attendance" | "people";
 
 type MenuItem = {
   name: string;
@@ -44,16 +45,30 @@ const Admin_menu: React.FC = () => {
   const menuItems: MenuItem[] = [
     { name: "Dashboard", key: "dashboard" },
     { name: "Attendance Records", key: "attendance" },
+    { name: "Registered People", key: "people" },
   ];
 
-  /* ✅ FIX: no JSX.Element typing */
   const renderContent = () => {
     switch (activePage) {
       case "attendance":
         return <AdminAttendanceRecord />;
+      case "people":
+        return <Admin_people />;
       case "dashboard":
       default:
         return <AdminDashboard />;
+    }
+  };
+
+  const getTitle = (): string => {
+    switch (activePage) {
+      case "attendance":
+        return "Attendance Records";
+      case "people":
+        return "Registered People";
+      case "dashboard":
+      default:
+        return "Dashboard";
     }
   };
 
@@ -113,17 +128,12 @@ const Admin_menu: React.FC = () => {
               <IonButtons slot="start">
                 <IonMenuButton />
               </IonButtons>
-              <IonTitle>
-                {activePage === "attendance"
-                  ? "Attendance Records"
-                  : "Dashboard"}
-              </IonTitle>
+
+              <IonTitle>{getTitle()}</IonTitle>
             </IonToolbar>
           </IonHeader>
 
-          <IonContent className="ion-padding">
-            {renderContent()}
-          </IonContent>
+          <IonContent className="ion-padding">{renderContent()}</IonContent>
         </div>
       </IonSplitPane>
     </IonPage>

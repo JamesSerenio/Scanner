@@ -72,8 +72,8 @@ const Home: React.FC = () => {
     }
 
     scannerRef.current = null;
-    scanLockRef.current = false; // ✅ reset
-    lastScanRef.current = null; // ✅ reset
+    scanLockRef.current = false;
+    lastScanRef.current = null;
     setRunning(false);
     setScannerOpen(false);
   };
@@ -119,11 +119,9 @@ const Home: React.FC = () => {
     setMsg("");
     setLastPerson(null);
 
-    // ✅ reset locks each time you start
     scanLockRef.current = false;
     lastScanRef.current = null;
 
-    // open modal first (so the QR container exists in DOM)
     setScannerOpen(true);
 
     setTimeout(async () => {
@@ -135,7 +133,7 @@ const Home: React.FC = () => {
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const onScanFailure = (_errorMessage: string): void => {
-          // ignore per-frame decode errors
+          // ignore
         };
 
         await qr.start(
@@ -145,10 +143,8 @@ const Home: React.FC = () => {
             const value = decodedText.trim();
             if (!value) return;
 
-            // ✅ 1) hard lock (ONLY ONCE)
             if (scanLockRef.current) return;
 
-            // ✅ 2) optional: ignore same QR within 2 seconds
             const now = Date.now();
             if (
               lastScanRef.current?.value === value &&
@@ -160,7 +156,6 @@ const Home: React.FC = () => {
             scanLockRef.current = true;
             lastScanRef.current = { value, at: now };
 
-            // ✅ stop camera ASAP to prevent more callbacks
             try {
               await qr.stop();
               await qr.clear();
@@ -172,11 +167,7 @@ const Home: React.FC = () => {
             setRunning(false);
             setScannerOpen(false);
 
-            // ✅ now do DB insert once
             await handleScan(value);
-
-            // ✅ keep locked until user presses Scan again
-            // (so it will never create another record in the same scan session)
           },
           onScanFailure
         );
@@ -193,6 +184,15 @@ const Home: React.FC = () => {
         );
       }
     }, 120);
+  };
+
+  // ✅ IMPORTANT FIX:
+  // When going to admin login, remove anon session first so it won't auto redirect.
+  const goAdminLogin = async (): Promise<void> => {
+    setMsg("");
+    await stop(); // stop camera if open
+    await supabase.auth.signOut(); // ✅ remove anon session
+    history.push("/admin"); // go login form
   };
 
   useEffect(() => {
@@ -216,7 +216,8 @@ const Home: React.FC = () => {
             <IonButton
               expand="block"
               className="btn-green"
-              onClick={() => history.push("/admin")}
+              onClick={() => void goAdminLogin()}  // ✅ FIXED
+              disabled={running || scannerOpen}    // optional safety
             >
               Admin Login
             </IonButton>
@@ -225,7 +226,7 @@ const Home: React.FC = () => {
               expand="block"
               className="btn-green"
               onClick={start}
-              disabled={running || scannerOpen} // ✅ no double start
+              disabled={running || scannerOpen}
             >
               Scan to Attendance
             </IonButton>
@@ -247,7 +248,6 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* ✅ Scanner Modal */}
         <IonModal
           isOpen={scannerOpen}
           onDidDismiss={() => void stop()}

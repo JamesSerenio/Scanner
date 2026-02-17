@@ -23,7 +23,7 @@
 
 .scanner-card {
   width: 100%;
-  max-width: 350px;
+  max-width: 35 0px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
@@ -228,288 +228,422 @@ ion-button.btn-green::part(native) {
   min-height: 44px;
 }
 
+/* =========================
+   ATR3 - Attendance Records (TABLE)
+   Scoped classes only
+========================= */
+
+.atr3-page,
+.atr3-page ion-content {
+  --background: #f7f7fb !important;
+  background: #f7f7fb !important;
+}
+
+/* header */
+.atr3-toolbar {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* layout */
+.atr3-content {
+  --padding-top: 14px;
+  --padding-bottom: 24px;
+}
+
+.atr3-wrap {
+  min-height: calc(100vh - 112px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 12px 12px 28px;
+}
+
+.atr3-card {
+  width: 100%;
+  max-width: 1080px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* head */
+.atr3-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.atr3-title {
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  color: #111;
+  font-size: 18px;
+}
+
+.atr3-subtitle {
+  margin: 4px 0 0;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* button */
+.atr3-btn {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #ffffff;
+  --border-radius: 14px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+ion-button.atr3-btn::part(native) {
+  min-height: 44px;
+}
+
+/* alerts */
+.atr3-alert {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 800;
+}
+
+.atr3-alertRow {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.atr3-alert--error {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  color: rgba(185, 28, 28, 0.95);
+}
+
+.atr3-alert p {
+  margin: 0;
+}
+
+/* table */
+.atr3-tableWrap {
+  width: 100%;
+  overflow: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.atr3-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 840px;
+  background: #fff;
+}
+
+.atr3-table thead th {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: rgba(0, 0, 0, 0.6);
+
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.atr3-table tbody td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.82);
+  vertical-align: middle;
+}
+
+.atr3-table tbody tr:hover td {
+  background: rgba(47, 158, 99, 0.06);
+}
+
+.atr3-name {
+  font-weight: 950;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.atr3-empty {
+  padding: 18px 10px !important;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 850;
+}
+
+/* status pill */
+.atr3-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 950;
+  font-size: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.atr3-pill--open {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.22);
+  color: rgba(146, 64, 14, 0.95);
+}
+
+.atr3-pill--done {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.22);
+  color: rgba(20, 83, 45, 0.95);
+}
+
+.atr3-footNote {
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.58);
+  font-weight: 750;
+  font-size: 13px;
+}
+
 
 
 /* =========================
-   ADMIN DASHBOARD (FIXED / CLEAN)
+   ADMIN DASHBOARD (adb2) - UNIQUE + COMPACT + CENTER
 ========================= */
 
-.admin-dashboard-page,
-.admin-dashboard-page ion-content {
-  --background: transparent !important;
-  background: radial-gradient(900px 600px at 15% 0%, rgba(255, 46, 85, 0.16), transparent 55%),
-              radial-gradient(900px 600px at 85% 15%, rgba(255, 77, 109, 0.10), transparent 60%),
-              linear-gradient(180deg, #0b0b10, #0f1018) !important;
+.adb2-page,
+.adb2-page ion-content {
+  --background: #ffffff !important;
+  background: #ffffff !important;
 }
 
-/* Center layout like a real dashboard */
-.admin-dashboard-content {
-  max-width: 100% !important;
-  margin: 0 auto !important;
-  padding: 18px 14px 28px !important;
+/* clean white toolbar */
+.adb2-toolbar {
+  --background: #ffffff;
+  --color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
 
+/* ✅ CENTER (both horizontal + vertical) */
+.adb2-content {
+  --padding-top: 12px;
+  --padding-bottom: 16px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+/* ✅ wrapper: allow scroll, avoid bottom cut */
+.adb2-wrap {
+  min-height: calc(100vh - 112px);
   display: flex;
   justify-content: center;
-}
 
-/* Everything inside will have max width */
-.admin-dashboard-content > * {
+  /* ✅ default: top aligned para hindi ma-cut */
+  align-items: flex-start;
+
+  /* ✅ add bottom space para di dikit/cut */
+  padding: 14px 0 28px;
+}
+/* ✅ Compact card (smaller height) */
+
+.adb2-card {
   width: 100%;
-  max-width: 980px;
-}
+  max-width: 420px;
 
-/* Top bar */
-.admin-topbar {
-  margin-bottom: 12px;
-}
-
-.admin-logout-btn {
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
-}
-
-/* Main glass card */
-.admin-card {
-  padding: 18px 16px 16px;
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
-}
-
-.admin-section-title {
-  margin: 4px 0 12px;
-  font-weight: 950;
-  letter-spacing: 0.4px;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-/* Inputs */
-.admin-form-item {
-  margin: 10px 0;
-  border-radius: 16px;
-  overflow: hidden;
-
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.14);
-  --highlight-color-focused: #ff2e55;
-}
-
-.admin-form-item ion-label {
-  font-weight: 850;
-  color: rgba(255, 255, 255, 0.76) !important;
-}
-
-.admin-form-item ion-input input {
-  color: rgba(255, 255, 255, 0.95) !important;
-}
-
-.admin-form-item ion-select::part(text) {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-/* Upload */
-.admin-upload {
-  margin-top: 10px;
-  padding: 12px 12px;
-  border-radius: 16px;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-}
-
-.admin-upload-title {
-  display: inline-block;
-  font-weight: 950;
-  margin-bottom: 8px;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.admin-upload-input {
-  display: block;
-  width: 100%;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.admin-upload-hint p {
-  margin: 10px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-/* Message */
-.admin-message {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  text-align: center;
-  font-weight: 850;
-
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
-}
-
-.admin-message p {
-  margin: 0;
-}
-
-/* Save button */
-.admin-save-btn {
-  margin-top: 12px;
-  font-weight: 950;
-  letter-spacing: 0.4px;
-
-  --border-radius: 18px;
-  --background: linear-gradient(135deg, #ff2e55, #ff4d6d);
-  --background-activated: linear-gradient(135deg, #ff4d6d, #ff2e55);
-
-  box-shadow: 0 0 26px rgba(255, 46, 85, 0.28),
-              0 18px 40px rgba(0, 0, 0, 0.55);
-}
-
-/* QR preview */
-.qr-preview {
-  margin-top: 14px;
-  padding: 14px 14px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.10);
   border-radius: 18px;
 
-  background: rgba(255, 46, 85, 0.12);
-  border: 1px solid rgba(255, 46, 85, 0.26);
+  padding: 14px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
 }
 
-.qr-image {
-  width: 100%;
-  max-width: 320px;
-  border-radius: 14px;
-  display: block;
-  margin-top: 10px;
-  box-shadow: 0 0 20px rgba(255, 46, 85, 0.18);
-}
-
-/* Divider */
-.divider {
-  height: 1px;
-  margin: 18px 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
-}
-
-/* People grid */
-.people-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.person-card {
-  padding: 14px 14px;
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-}
-
-.person-top {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.person-avatar {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.person-avatar.placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.person-name {
-  margin: 0;
-  font-weight: 950;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.person-sub {
-  margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 750;
-}
-
-.person-qr {
-  margin-top: 10px;
-  padding: 10px 10px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-.person-qr-text {
-  margin: 0;
-  word-break: break-all;
-  color: rgba(255, 255, 255, 0.88);
-}
-
-/* Logs header and list */
-.logs-header {
+/* header row */
+.adb2-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  margin-bottom: 8px;
 }
 
-.admin-refresh-btn {
-  --border-radius: 18px;
-  --background: rgba(255, 255, 255, 0.06);
-  --border-color: rgba(255, 255, 255, 0.18);
-  --color: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.48);
+.adb2-title {
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: 0.2px;
+  font-size: 16px;
+  color: #111;
 }
 
-.logs-list {
-  display: grid;
-  grid-template-columns: 1fr;
+/* ✅ Compact ion items */
+.adb2-item {
+  margin: 8px 0;
+  border-radius: 14px;
+  overflow: hidden;
+
+  --background: #ffffff;
+  --border-color: rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0, 0, 0, 0.10);
+
+  --min-height: 54px;
+}
+
+.adb2-item ion-label {
+  font-weight: 850;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.62) !important;
+}
+
+.adb2-item ion-input input {
+  color: #111 !important;
+  font-size: 14px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.adb2-item ion-select::part(text) {
+  color: #111;
+  font-size: 14px;
+}
+
+/* ✅ Upload compact */
+.adb2-upload {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.adb2-uploadRow {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.log-card {
-  padding: 12px 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+.adb2-uploadLabel {
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.70);
+  white-space: nowrap;
 }
 
-.log-name {
+.adb2-uploadInput {
+  width: 100%;
+  font-size: 13px;
+}
+
+.adb2-hint p {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.60);
+}
+
+/* message */
+.adb2-msg {
+  margin-top: 10px;
+}
+
+.adb2-msg p {
   margin: 0;
-  font-weight: 950;
-  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  font-weight: 850;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.70);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 10px 12px;
+  border-radius: 14px;
 }
 
-.log-sub {
-  margin: 6px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-weight: 750;
+/* ✅ Buttons (compact) */
+.adb2-btn {
+  --background: #2f9e63;
+  --background-hover: #278a56;
+  --background-activated: #278a56;
+  --color: #fff;
+  --border-radius: 14px;
+
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  margin: 10px 0 0;
 }
 
-/* Responsive */
-@media (max-width: 760px) {
-  .people-grid {
-    grid-template-columns: 1fr;
+ion-button.adb2-btn::part(native) {
+  min-height: 46px; /* ✅ smaller than before */
+}
+
+.adb2-btn--small {
+  font-size: 12px;
+  margin: 0;
+}
+
+ion-button.adb2-btn--small::part(native) {
+  min-height: 38px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* QR preview */
+.adb2-qr {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(47, 158, 99, 0.22);
+  background: rgba(47, 158, 99, 0.08);
+}
+
+.adb2-qrImg {
+  width: 100%;
+  max-width: 260px;
+  display: block;
+  margin-top: 10px;
+  border-radius: 14px;
+}
+
+/* Image preview box */
+.adb2-previewBox {
+  margin-top: 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.adb2-previewImg {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.adb2-previewActions {
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@media (min-height: 780px) {
+  .adb2-wrap {
+    align-items: center;
   }
 }
