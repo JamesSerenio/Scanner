@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -7,6 +7,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  IonSpinner,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { supabase } from "../utils/supabaseClient";
@@ -14,17 +15,12 @@ import { supabase } from "../utils/supabaseClient";
 type PersonRow = {
   id: string;
   full_name: string;
-  age: number | null;
-  sex: string | null;
-  image_url: string | null;
-  image_path: string | null;
-  qr_value: string;
-  created_at: string;
 };
 
 type LogRow = {
   id: string;
-  created_at: string;
+  time_in: string;
+  time_out: string | null;
   person_id: string;
   scanned_by_role: string;
 };
@@ -33,37 +29,50 @@ const AdminAttendanceRecord: React.FC = () => {
   const history = useHistory();
 
   const [msg, setMsg] = useState("");
-  const [people, setPeople] = useState<PersonRow[]>([]);
+  const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<Array<LogRow & { person?: PersonRow }>>([]);
 
-  const loadPeople = async (): Promise<void> => {
-    const { data, error } = await supabase
-      .from("attendance_people")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
+  // ✅ Manila time display
+  const dtf = useMemo(
+    () =>
+      new Intl.DateTimeFormat("en-PH", {
+        timeZone: "Asia/Manila",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }),
+    []
+  );
 
-    if (error) {
-      setMsg(error.message);
-      return;
-    }
-    setPeople((data as PersonRow[]) ?? []);
+  const fmt = (iso: string | null | undefined): string => {
+    if (!iso) return "—";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "—";
+    return dtf.format(d);
   };
 
   const loadLogs = async (): Promise<void> => {
+    setMsg("");
+    setLoading(true);
+
     const { data, error } = await supabase
       .from("attendance_logs")
-      .select("id, created_at, person_id, scanned_by_role")
-      .order("created_at", { ascending: false })
-      .limit(50);
+      .select("id, time_in, time_out, person_id, scanned_by_role")
+      .order("time_in", { ascending: false })
+      .limit(200);
 
     if (error) {
+      setLoading(false);
       setMsg(error.message);
       return;
     }
 
     const rows = (data as LogRow[]) ?? [];
     if (rows.length === 0) {
+      setLoading(false);
       setLogs([]);
       return;
     }
@@ -72,8 +81,10 @@ const AdminAttendanceRecord: React.FC = () => {
 
     const { data: peopleData, error: pErr } = await supabase
       .from("attendance_people")
-      .select("*")
+      .select("id, full_name")
       .in("id", personIds);
+
+    setLoading(false);
 
     if (pErr) {
       setMsg(pErr.message);
@@ -93,98 +104,98 @@ const AdminAttendanceRecord: React.FC = () => {
         history.replace("/admin");
         return;
       }
-      await loadPeople();
       await loadLogs();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <IonPage className="admin-white-page">
+    <IonPage className="atr3-page">
       <IonHeader>
-        <IonToolbar className="admin-toolbar-white">
+        <IonToolbar className="atr3-toolbar">
           <IonTitle>Attendance Records</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
-        <div className="admin-center-wide">
-          <div className="admin-card-white">
-            <div className="admin-header-row">
-              <h2 className="admin-title-white">Recent People</h2>
-              <div className="admin-header-actions">
-                <IonButton className="btn-green small" onClick={loadPeople}>
-                  Refresh
-                </IonButton>
-                <IonButton
-                  className="btn-green small"
-                  onClick={() => history.push("/admin/dashboard")}
-                >
-                  Back
-                </IonButton>
+      <IonContent className="atr3-content" scrollY={true}>
+        <div className="atr3-wrap">
+          <div className="atr3-card">
+            <div className="atr3-head">
+              <div>
+                <h2 className="atr3-title">Time In / Time Out Logs</h2>
+                <p className="atr3-subtitle">Latest attendance scan sessions</p>
               </div>
+
+              <IonButton className="atr3-btn" onClick={loadLogs} disabled={loading}>
+                {loading ? "Refreshing..." : "Refresh"}
+              </IonButton>
             </div>
 
+            {loading ? (
+              <IonText className="atr3-alert">
+                <p className="atr3-alertRow">
+                  <IonSpinner name="dots" /> Loading logs...
+                </p>
+              </IonText>
+            ) : null}
+
             {msg ? (
-              <IonText className="admin-message-white">
+              <IonText className="atr3-alert atr3-alert--error">
                 <p>{msg}</p>
               </IonText>
             ) : null}
 
-            <div className="people-grid-white">
-              {people.map((p) => (
-                <div key={p.id} className="person-card-white">
-                  <div className="person-top-white">
-                    {p.image_url ? (
-                      <img className="person-avatar-white" src={p.image_url} alt="person" />
-                    ) : (
-                      <div className="person-avatar-white placeholder">👤</div>
-                    )}
+            <div className="atr3-tableWrap">
+              <table className="atr3-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Scanned By</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
 
-                    <div className="person-meta-white">
-                      <IonText>
-                        <p className="person-name-white">{p.full_name}</p>
-                        <p className="person-sub-white">
-                          {p.sex ?? "N/A"} • {p.age ?? "N/A"}
-                        </p>
-                      </IonText>
-                    </div>
-                  </div>
-
-                  <div className="person-qr-white">
-                    <IonText>
-                      <p className="person-qr-text-white">
-                        <b>QR:</b> {p.qr_value}
-                      </p>
-                    </IonText>
-                  </div>
-                </div>
-              ))}
+                <tbody>
+                  {logs.length === 0 ? (
+                    <tr>
+                      <td className="atr3-empty" colSpan={6}>
+                        No logs found yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    logs.map((l, idx) => {
+                      const status = l.time_out ? "Completed" : "In Session";
+                      return (
+                        <tr key={l.id}>
+                          <td>{idx + 1}</td>
+                          <td className="atr3-name">{l.person?.full_name ?? "Unknown"}</td>
+                          <td>{fmt(l.time_in)}</td>
+                          <td>{fmt(l.time_out)}</td>
+                          <td>{l.scanned_by_role}</td>
+                          <td>
+                            <span
+                              className={
+                                status === "Completed"
+                                  ? "atr3-pill atr3-pill--done"
+                                  : "atr3-pill atr3-pill--open"
+                              }
+                            >
+                              {status}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
             </div>
 
-            <div className="divider-white" />
-
-            <div className="admin-header-row">
-              <h2 className="admin-title-white">Recent Attendance Logs</h2>
-              <IonButton className="btn-green small" onClick={loadLogs}>
-                Refresh
-              </IonButton>
-            </div>
-
-            <div className="logs-list-white">
-              {logs.map((l) => (
-                <div key={l.id} className="log-card-white">
-                  <IonText>
-                    <p className="log-name-white">
-                      <b>{l.person?.full_name ?? "Unknown"}</b>
-                    </p>
-                    <p className="log-sub-white">
-                      {new Date(l.created_at).toLocaleString()} • Role:{" "}
-                      {l.scanned_by_role}
-                    </p>
-                  </IonText>
-                </div>
-              ))}
+            <div className="atr3-footNote">
+              Showing up to <b>{Math.min(logs.length, 200)}</b> rows.
             </div>
           </div>
         </div>
