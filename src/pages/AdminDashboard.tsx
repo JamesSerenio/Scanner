@@ -12,6 +12,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  IonSpinner,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
 import { toDataURL } from "qrcode";
@@ -28,6 +29,11 @@ type AttendancePersonRow = {
   created_at: string;
 };
 
+type UploadedImage = {
+  publicUrl: string;
+  path: string;
+};
+
 const AdminDashboard: React.FC = () => {
   const history = useHistory();
 
@@ -36,7 +42,15 @@ const AdminDashboard: React.FC = () => {
   const [sex, setSex] = useState<string>("Male");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
+
+  // ✅ selected local file (for name display only)
   const [file, setFile] = useState<File | null>(null);
+
+  // ✅ uploaded storage info (source of preview + used on save)
+  const [uploaded, setUploaded] = useState<UploadedImage | null>(null);
+
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const [msg, setMsg] = useState("");
   const [qrDataUrl, setQrDataUrl] = useState<string>("");
@@ -57,18 +71,21 @@ const AdminDashboard: React.FC = () => {
     return allowed.includes(ext) ? ext : "jpg";
   };
 
-  const uploadImageToStorage = async (): Promise<
-    { publicUrl: string; path: string } | null
-  > => {
-    if (!file) return null;
+  const deleteStoragePath = async (path: string): Promise<void> => {
+    if (!path) return;
+    const { error } = await supabase.storage.from(bucket).remove([path]);
+    if (error) console.log("remove error:", error.message);
+  };
 
-    const ext = getSafeExt(file.name);
+  // ✅ upload immediately when user picks an image
+  const uploadNow = async (picked: File): Promise<UploadedImage | null> => {
+    const ext = getSafeExt(picked.name);
     const path = `people/${crypto.randomUUID()}.${ext}`;
 
-    const { error: upErr } = await supabase.storage.from(bucket).upload(path, file, {
+    const { error: upErr } = await supabase.storage.from(bucket).upload(path, picked, {
       cacheControl: "3600",
       upsert: false,
-      contentType: file.type || `image/${ext}`,
+      contentType: picked.type || `image/${ext}`,
     });
 
     if (upErr) {
@@ -81,16 +98,54 @@ const AdminDashboard: React.FC = () => {
 
     if (!publicUrl) {
       setMsg("Upload ok but failed to create public URL.");
+      // clean orphan
+      await deleteStoragePath(path);
       return null;
     }
 
     return { publicUrl, path };
   };
 
-  const deleteStoragePath = async (path: string): Promise<void> => {
-    if (!path) return;
-    const { error } = await supabase.storage.from(bucket).remove([path]);
-    if (error) console.log("remove error:", error.message);
+  const onPickFile = async (picked: File | null): Promise<void> => {
+    setMsg("");
+    setQrDataUrl("");
+
+    if (!picked) return;
+
+    // ✅ if may previous uploaded image, delete it first (replace behavior)
+    if (uploaded?.path) {
+      await deleteStoragePath(uploaded.path);
+      setUploaded(null);
+    }
+
+    setFile(picked);
+    setUploading(true);
+
+    const up = await uploadNow(picked);
+
+    setUploading(false);
+
+    if (!up) {
+      // failed upload
+      setFile(null);
+      setUploaded(null);
+      return;
+    }
+
+    setUploaded(up);
+  };
+
+  const removeImage = async (): Promise<void> => {
+    setMsg("");
+    setQrDataUrl("");
+
+    // ✅ delete from storage if uploaded
+    if (uploaded?.path) {
+      await deleteStoragePath(uploaded.path);
+    }
+
+    setUploaded(null);
+    setFile(null);
   };
 
   const addPerson = async (): Promise<void> => {
@@ -102,8 +157,9 @@ const AdminDashboard: React.FC = () => {
       return;
     }
 
+    setSaving(true);
+
     const qrValue = `ATT-${crypto.randomUUID()}`;
-    const uploaded = await uploadImageToStorage();
 
     const { data: sess } = await supabase.auth.getSession();
     const createdBy = sess.session?.user?.id ?? null;
@@ -120,6 +176,8 @@ const AdminDashboard: React.FC = () => {
       contact: contact.trim() || null,
       qr_value: qrValue,
       created_by: createdBy,
+
+      // ✅ use already-uploaded image (or null)
       image_url: uploaded?.publicUrl ?? null,
       image_path: uploaded?.path ?? null,
     };
@@ -127,7 +185,13 @@ const AdminDashboard: React.FC = () => {
     const { error } = await supabase.from("attendance_people").insert(payload);
 
     if (error) {
+      // ✅ if save failed, also delete uploaded image (para walang orphan)
       if (uploaded?.path) await deleteStoragePath(uploaded.path);
+
+      setSaving(false);
+      setUploaded(null);
+      setFile(null);
+
       setMsg(error.message);
       return;
     }
@@ -140,8 +204,12 @@ const AdminDashboard: React.FC = () => {
     setSex("Male");
     setAddress("");
     setContact("");
+
+    // ✅ clear selection but KEEP uploaded? (usually after save you can clear it)
+    setUploaded(null);
     setFile(null);
 
+    setSaving(false);
     setMsg("Person added + QR generated.");
   };
 
@@ -203,22 +271,50 @@ const AdminDashboard: React.FC = () => {
               />
             </IonItem>
 
+            {/* ✅ Upload + Preview (from uploaded publicUrl) */}
             <div className="adb2-upload">
               <div className="adb2-uploadRow">
                 <span className="adb2-uploadLabel">Image</span>
+
                 <input
                   className="adb2-uploadInput"
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  disabled={uploading || saving}
+                  onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
                 />
               </div>
 
-              {file ? (
+              {uploading ? (
+                <IonText className="adb2-hint">
+                  <p style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <IonSpinner name="dots" />
+                    Uploading image...
+                  </p>
+                </IonText>
+              ) : uploaded?.publicUrl ? (
+                <div className="adb2-previewBox">
+                  <img className="adb2-previewImg" src={uploaded.publicUrl} alt="Preview" />
+                  <div className="adb2-previewActions">
+                    <IonButton
+                      className="adb2-btn adb2-btn--small"
+                      fill="outline"
+                      disabled={saving}
+                      onClick={removeImage}
+                    >
+                      Remove
+                    </IonButton>
+                  </div>
+                </div>
+              ) : file ? (
                 <IonText className="adb2-hint">
                   <p>Selected: {file.name}</p>
                 </IonText>
-              ) : null}
+              ) : (
+                <IonText className="adb2-hint">
+                  <p>No image selected.</p>
+                </IonText>
+              )}
             </div>
 
             {msg ? (
@@ -227,8 +323,13 @@ const AdminDashboard: React.FC = () => {
               </IonText>
             ) : null}
 
-            <IonButton expand="block" className="adb2-btn" onClick={addPerson}>
-              Save Person + Generate QR
+            <IonButton
+              expand="block"
+              className="adb2-btn"
+              disabled={uploading || saving}
+              onClick={addPerson}
+            >
+              {saving ? "Saving..." : "Save Person + Generate QR"}
             </IonButton>
 
             {qrDataUrl ? (
